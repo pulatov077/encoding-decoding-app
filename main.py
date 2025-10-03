@@ -1,28 +1,79 @@
 import base64
+import codecs
+import urllib.parse
+import argparse
 
 
-def encode_text(text):
-    encoded_bytes = base64.b64encode(text.encode("utf-8"))
-    return encoded_bytes.decode("utf-8")
+def encode_text(text: str, method: str = "base64") -> str:
+    """Encode given text using the selected method.
+
+    Args:
+        text: Plain string to encode.
+        method: Encoding method ("base64", "hex", "rot13", "url").
+
+    Returns:
+        Encoded string. If method is invalid, returns an error string.
+    """
+    if method == "base64":
+        return base64.b64encode(text.encode("utf-8")).decode("utf-8")
+    if method == "hex":
+        return text.encode("utf-8").hex()
+    if method == "rot13":
+        return codecs.encode(text, "rot_13")
+    if method == "url":
+        return urllib.parse.quote(text)
+    return "❌ Noto‘g‘ri usul!"
 
 
-def decode_text(encoded_text):
-    decoded_bytes = base64.b64decode(encoded_text.encode("utf-8"))
-    return decoded_bytes.decode("utf-8")
+def decode_text(text: str, method: str = "base64") -> str:
+    """Decode encoded text using the selected method.
+
+    Args:
+        text: Encoded string to decode.
+        method: Decoding method ("base64", "hex", "rot13", "url").
+
+    Returns:
+        Decoded string if successful, otherwise an error message.
+    """
+    try:
+        if method == "base64":
+            return base64.b64decode(text.encode("utf-8")).decode("utf-8")
+        if method == "hex":
+            return bytes.fromhex(text).decode("utf-8")
+        if method == "rot13":
+            return codecs.decode(text, "rot_13")
+        if method == "url":
+            return urllib.parse.unquote(text)
+        return "❌ Noto‘g‘ri usul!"
+    except Exception as error:
+        return f"❌ Xatolik: {str(error)}"
 
 
 def main():
-    print("=== Base64 Encoder/Decoder ===")
-    choice = input("Encode (e) yoki Decode (d)? ")
+    """Command-line interface for Encoder/Decoder."""
+    parser = argparse.ArgumentParser(description="Encoder/Decoder CLI App")
+    parser.add_argument(
+        "mode",
+        choices=["encode", "decode"],
+        help="Ishlash rejimi: encode yoki decode",
+    )
+    parser.add_argument(
+        "text",
+        help="Matn (encode uchun) yoki kodlangan matn (decode uchun)",
+    )
+    parser.add_argument(
+        "--method",
+        choices=["base64", "hex", "rot13", "url"],
+        default="base64",
+        help="Usulni tanlang",
+    )
 
-    if choice.lower() == "e":
-        text = input("Matn kiriting: ")
-        print("Encoded:", encode_text(text))
-    elif choice.lower() == "d":
-        encoded_text = input("Encoded matn kiriting: ")
-        print("Decoded:", decode_text(encoded_text))
+    args = parser.parse_args()
+
+    if args.mode == "encode":
+        print("Encoded:", encode_text(args.text, args.method))
     else:
-        print("Noto‘g‘ri tanlov!")
+        print("Decoded:", decode_text(args.text, args.method))
 
 
 if __name__ == "__main__":
