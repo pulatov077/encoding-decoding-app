@@ -22,7 +22,7 @@ def encode_text(text: str, method: str = "base64") -> str:
         return codecs.encode(text, "rot_13")
     if method == "url":
         return urllib.parse.quote(text)
-    return "❌ Noto‘g‘ri usul!"
+    return "❌ Noto'g'ri usul!"
 
 
 def decode_text(text: str, method: str = "base64") -> str:
@@ -44,7 +44,7 @@ def decode_text(text: str, method: str = "base64") -> str:
             return codecs.decode(text, "rot_13")
         if method == "url":
             return urllib.parse.unquote(text)
-        return "❌ Noto‘g‘ri usul!"
+        return "❌ Noto'g'ri usul!"
     except Exception as error:
         return f"❌ Xatolik: {str(error)}"
 
