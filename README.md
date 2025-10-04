@@ -72,3 +72,7 @@ python main.py encode "https://yandex.uz/" --method url
 python main.py encode --help
 
 ```
+
+
+## Dist Bo'limi
+### Uning ichida .exe fayl Windows uchun yuklab ishlataversa buladi va Linux/MacOS uchun alohida app versiyasi bor dasturni.!!!
