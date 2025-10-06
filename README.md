@@ -42,6 +42,16 @@ Decode tugmasini bosing — matn dekodlanadi.
 Natija oynaning pastki qismida chiqadi
 ```
 
+
+## 🐧 Linux foydalanuvchilari uchun
+```bash 
+#1-usul 
+python main.py 
+#2-usul
+rm -rf build main.spec
+pyinstaller --onefile --noconsole main.py
+```
+
 ## 🚀 Ishlatish
 
 ### 1️⃣ Encode qilish
